@@ -26,14 +26,14 @@ Node::Node(int x) {
   nextPtr = NULL;
 }
 
-Node::~Node() { cout << value << " deleted" << endl; }
+Node::~Node() { }
 
 NodePtr Node::get_next() { return nextPtr; }
 
 int Node::get_data() { return value; }
 
 void Node::set_next(NodePtr t) {
-  this->nextPtr = t; 
+  nextPtr = t; 
 }
 
 void Node::print(){

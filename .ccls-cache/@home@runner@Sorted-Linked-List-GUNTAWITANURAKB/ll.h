@@ -16,8 +16,8 @@ public:
 };
 
 LL::LL() {
-  this->hol = NULL;
-  this->tail = NULL;
+  hol = NULL;
+  tail = NULL;
   size = 0;
 }
 
@@ -31,6 +31,7 @@ LL::~LL() {
     t = hol;
   }
 }
+
 
 void LL::insert(int value) {
   NodePtr newNode = new Node(value); // Create a new node with the given value
@@ -68,6 +69,8 @@ void LL::insert(int value) {
 }
 
 
+
+
 // delete a list element
 int LL::deletes(int value) {
     if (isEmpty()) {
@@ -77,25 +80,27 @@ int LL::deletes(int value) {
 
     int count = 0;
     NodePtr current = hol;
-    NodePtr previous = nullptr;
 
-    // Traverse the list to find and delete nodes with the given value
-    while (current != nullptr) {
+    while (current != nullptr && count < size) {
         if (current->get_data() == value) {
-            // Update the next pointer of the previous node
-            if (previous != nullptr) {
-                previous->set_next(current->get_next());
-            } else {
+            if (current == hol) {
                 // If the node to be deleted is the head node
                 hol = current->get_next();
-            }
-
-            // Update the previous pointer of the next node (for doubly linked list)
-            if (current->get_next() != nullptr) {
-                current->get_next()->set_prev(previous);
+                if (hol != nullptr) {
+                    // Update the previous pointer of the new head node
+                    hol->set_prev(nullptr);
+                } else {
+                    // If there are no more nodes left after deletion
+                    tail = nullptr;
+                }
             } else {
-                // If the node to be deleted is the tail node
-                tail = previous;
+                // Update the next pointer of the previous node
+                current->get_prev()->set_next(current->get_next());
+
+                // Update the previous pointer of the next node
+                if (current->get_next() != nullptr) {
+                    current->get_next()->set_prev(current->get_prev());
+                }
             }
 
             NodePtr temp = current;
@@ -104,13 +109,20 @@ int LL::deletes(int value) {
             size--;
             count++;
         } else {
-            previous = current;
             current = current->get_next();
         }
     }
 
+    if (count > 0) {
+        cout << value << " deleted." << endl;
+    } else {
+        cout << value << " not found." << endl;
+    }
+
     return count;
 }
+
+
 
 
 
@@ -147,4 +159,3 @@ void LL::printReverse() {
     std::cout << "NULL" << std::endl;
   }
 }
-
